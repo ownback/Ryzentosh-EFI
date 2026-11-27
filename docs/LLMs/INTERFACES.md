@@ -16,5 +16,4 @@ External contracts: IOKit classes and properties, user-client selectors, plist k
   described in `docs/LLMs/KEXTS.md`.
 
 ## Boot-args other repos rely on
-- `phxdebug=1` (legacy VermilionBoot + live `phxboot`), `amtk_awdl_offchan=0` (MtkWirelessWifi, Ryzentosh-WIRELESS/AIR),
-  `pci=0x8000000` (IOPCIFamily extended tags; RZ616 behind the chipset root port). See KEXTS.md.
+- `phxdebug=1` (legacy VermilionBoot + live `phxboot`) and `pci=0x8000000` (IOPCIFamily extended tags; RZ616 behind the chipset root port). See KEXTS.md.

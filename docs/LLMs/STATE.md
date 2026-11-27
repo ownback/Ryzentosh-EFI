@@ -1,10 +1,10 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #4 (claude-opus-5-5 / high).
+Updated: 2026-11-27 by the Project Lead for #4 and #9 (claude-opus-5-5 / high).
 
 ## Phase
-E1 (#4) accepted. PR https://github.com/ownback/Ryzentosh-EFI/pull/7 is ready, and the Orchestrator squash-merges it.
-Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue, branch and PR.
+E-WiFi (#9): AirportMtkWlan 2.3.3 (AWDL beta) replaces MtkWirelessWifi 1.1.1. Branch `feat/9-airportmtkwlan`; the
+Orchestrator stages it, and the owner tests on the next reboot.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -25,13 +25,26 @@ Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue
 - Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
 ## In flight
-- PR #7 (E1): ready, waiting for the Orchestrator's squash merge.
-- E-WiFi: being prepared.
+- **E-WiFi (#9):** the PR is open, and the candidate is at `temp/ewifi-candidate/EFI/OC` (recipe beside it).
+  - The `efi-stage` dry run on 2026-11-27 20:31 shows `kernel patches: 25 … (4 edits) + 1 own` and `Kernel/Patch`
+    identical to live; ocvalidate reports only E3.
+  - Tree diff: +AirportMtkWlan, −MtkWirelessWifi, `~config.plist`.
+  - Config diff: `Kernel/Add[5]` swapped, `amtk_awdl_offchan=0` dropped (only MtkWirelessWifi read it).
+  - Staged by the Orchestrator 2026-11-27 20:33 from head 3192937. The baseline (MtkWirelessWifi) is in control-plane
+    `logs-local/ewifi/`: 94.5/42.5 Mbps, RPM 418, ch 52 80 MHz 802.11ax.
+  - Review (claude-fable-5-2): CHANGES-REQUESTED on the test plan only, with no boot blocker. Fixed in the PR: a step-0
+    baseline on the old driver before the reboot, "worse than baseline" means abort, any panic while loaded aborts, ping during AWDL, risk high, v2.3.2 fallback.
+  - The step-0 baseline is posted (PR #10 comment): AirDrop discovery OK, but no transfer; Handoff and Clipboard OK; AirPods OK,
+    the iPhone can't connect over BT. Sleep is off on this system.
+  - Next: the owner's reboot test, then the soak (≥ 24 h of normal use, 3 cold + 3 warm boots with boot reports) before merge and
+    USB promotion. The candidate must keep AirDrop discovery (#24); a failed transfer is not an abort.
+- E1 (#4): merged as 351b169.
 
 ## Blockers
 None. (The KDK 25G241 would let RB-0003a's open items trace the kext code paths.)
 
 ## Follow-ups (not in this PR)
+- After E-WiFi: evaluate bumping MtkWirelessBT 1.1.1 → Dino-VN/MtkWireless v1.1.3 (2026-11-25), as its own EFI change (Orchestrator).
 - `config.plist` top-level `#comment` with an SPDX line (changes the loaded file, so it needs its own change).
 - CI privacy scan: check `ROM` too, and drop `|| true` on the plist lint (`.github/workflows/ci.yml`).
 - The skill symlinks (`.agents/skills/ryzentosh`, `.claude/skills/ryzentosh`, `.claude/agents`) are relative and break
