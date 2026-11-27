@@ -2,6 +2,7 @@
 
 | Parity target | Test | Host or device | Status |
 |---|---|---|---|
+| **E-WiFi2** (#12): the Wi-Fi link holds with no dropouts; AirDrop discovery, Handoff, Clipboard and Bluetooth stay at least as good as on 1.1.1 | Step 0 = the PR #10 baseline. Owner test list in PR (30-min gateway ping hold, speed, AirDrop, Handoff, Clipboard, AirPods, iPhone BT both ways, `MTKWiFi*` counters). Worse than the baseline means roll back. Then the soak (≥ 24 h, 3 cold + 3 warm boots, each F8 → internal) | device | test PASS 2026-11-27 21:33; soak running |
 | The tree in git is the booted tree minus identity | `shasum -a 256 -c EFI/BINARIES.sha256` on the assembled tree; `config.plist` differs from the live one only in identity and the PR's intended change (flatten both with Python `plistlib` and compare key paths; `plutil -convert json` fails on `<data>`) | host | E1: pass |
 | No identity in git | Secret guard hook on commit/push; CI privacy scan; manual check of `PlatformInfo`, `DeviceProperties`, `NVRAM` | host | E1: pass |
 | Injected kernel patches equal the live ones | efi-stage dry run: `Kernel/Patch` vs live identical (AMD_Vanilla 0–24 from `kernel-patches.json` + our AGDP entry) | host | E1: pass (simulated by the Lead; the Orchestrator confirms on the dry run) |

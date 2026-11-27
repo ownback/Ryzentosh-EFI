@@ -1,10 +1,10 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #4 and #9 (claude-opus-5-5 / high).
+Updated: 2026-11-27 by the Project Lead for #4, #9 and #12 (claude-opus-5-5 / high).
 
 ## Phase
-E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-good config. E-WiFi (#9) was tried and
-**rejected** (see below). No EFI change is in flight, and the EFI lock is free.
+E-WiFi2 (#12): MtkWireless 1.1.1 → 1.1.3 (Wi-Fi + BT). Branch `feat/12-mtkwireless-1.1.3`. Binaries only; `config.plist`
+is unchanged. Hardware test passed; the soak is running.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -38,8 +38,19 @@ E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-goo
   Lead's job.
 
 ## In flight
-Nothing. The Orchestrator asks for the next Wi-Fi candidate, Dino-VN/MtkWireless v1.1.3 (Wi-Fi + Bluetooth, same author),
-when it wants it.
+- **E-WiFi2 (#12):** the candidate is at `temp/ewifi2-candidate/EFI/OC` (recipe beside it). Four files change, the
+  MtkWirelessWifi/MtkWirelessBT executables and Info.plists; the libsbc license texts are unchanged.
+  - The Info.plists are unchanged apart from the version, so the `Kernel/Add` entries stay. `amtk_awdl_offchan=0` stays:
+    1.1.3 still reads it, and `idle_gap` is moot with it.
+  - Test: the PR #10 structure with the step-0 baseline from #10, plus Bluetooth and a 30-min ping hold. Anything worse
+    than the baseline means roll back.
+  - PR #13. Review (claude-fable-5-2/medium): APPROVE; its should-fixes are applied (numeric dropout and reset-loop
+    criteria, BT controller check). Known limit: the AP is on DFS ch 52, so with `offchan=0` AWDL likely has no usable window.
+  - **Staged** by the Orchestrator from b1bb57b; it holds the EFI lock. The owner reboots once every agent has stopped.
+  - The DFS/AWDL follow-up is ownback/Ryzentosh-WIRELESS#1.
+  - **Hardware test PASS vs step 0** (boot 21:33): 97.9/50.7 Mbps (vs 94.5/42.5), 30-min ping 0/1800 lost, no reset
+    counters. The rest is the same as the baseline, except responsiveness 308 vs 418 RPM (one sample, recheck in soak).
+  - **Soak running:** ≥ 24 h, 3 cold + 3 warm boots, each with F8 → internal (the BIOS boots the USB); a boot report for each.
 
 ## E-WiFi (#9): tried and rejected, 2026-11-27
 - AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
