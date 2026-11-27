@@ -14,7 +14,7 @@ Research (ADR-0003). E1 (#4) runs in a separate thread.
 - Nothing publishes a T2 device. RyzentoshSSE is a protocol-level stand-in under Apple's `AppleSSE` class (a workaround, needs a flag and an issue; the emulation verdict is the Orchestrator's). VirtualSMC is an emulated SMC. Both are policy questions.
 
 ## In flight
-- Draft research PR for #1 + #2. The independent review (claude-fable-5-2) found 3 blocking items and 13 should-fix items, all addressed in the docs.
+- Draft research PR https://github.com/ownback/Ryzentosh-EFI/pull/8 for #1 + #2. The independent review (claude-fable-5-2) found 3 blocking items and 13 should-fix items, all addressed in the docs.
 
 ## Next step
 - The Orchestrator writes RB-0003c (model choice) and RB-0003d+ (per-service briefs) from these tables. One-shot test request: AGDP patch disabled.
