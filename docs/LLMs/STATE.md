@@ -4,7 +4,7 @@ Updated: 2026-11-27 by the Project Lead for #4, #9 and #12 (claude-opus-5-5 / hi
 
 ## Phase
 E-WiFi2 (#12): MtkWireless 1.1.1 → 1.1.3 (Wi-Fi + BT). Branch `feat/12-mtkwireless-1.1.3`. Binaries only; `config.plist`
-is unchanged. The owner reboots to test when they choose.
+is unchanged. Hardware test passed; the soak is running.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -48,6 +48,9 @@ is unchanged. The owner reboots to test when they choose.
     criteria, BT controller check). Known limit: the AP is on DFS ch 52, so with `offchan=0` AWDL likely has no usable window.
   - **Staged** by the Orchestrator from b1bb57b; it holds the EFI lock. The owner reboots once every agent has stopped.
   - The DFS/AWDL follow-up is ownback/Ryzentosh-WIRELESS#1.
+  - **Hardware test PASS vs step 0** (boot 21:33): 97.9/50.7 Mbps (vs 94.5/42.5), 30-min ping 0/1800 lost, no reset
+    counters. The rest is the same as the baseline, except responsiveness 308 vs 418 RPM (one sample, recheck in soak).
+  - **Soak running:** ≥ 24 h, 3 cold + 3 warm boots, each with F8 → internal (the BIOS boots the USB); a boot report for each.
 
 ## E-WiFi (#9): tried and rejected, 2026-11-27
 - AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
