@@ -46,7 +46,8 @@ is unchanged. The owner reboots to test when they choose.
     than the baseline means roll back.
   - PR #13. Review (claude-fable-5-2/medium): APPROVE; its should-fixes are applied (numeric dropout and reset-loop
     criteria, BT controller check). Known limit: the AP is on DFS ch 52, so with `offchan=0` AWDL likely has no usable window.
-  - Test request sent to the Orchestrator; the owner reboots when they choose.
+  - **Staged** by the Orchestrator from b1bb57b; it holds the EFI lock. The owner reboots once every agent has stopped.
+  - The DFS/AWDL follow-up is ownback/Ryzentosh-WIRELESS#1.
 
 ## E-WiFi (#9): tried and rejected, 2026-11-27
 - AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
