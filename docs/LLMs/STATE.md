@@ -44,6 +44,9 @@ is unchanged. The owner reboots to test when they choose.
     1.1.3 still reads it, and `idle_gap` is moot with it.
   - Test: the PR #10 structure with the step-0 baseline from #10, plus Bluetooth and a 30-min ping hold. Anything worse
     than the baseline means roll back.
+  - PR #13. Review (claude-fable-5-2/medium): APPROVE; its should-fixes are applied (numeric dropout and reset-loop
+    criteria, BT controller check). Known limit: the AP is on DFS ch 52, so with `offchan=0` AWDL likely has no usable window.
+  - Test request sent to the Orchestrator; the owner reboots when they choose.
 
 ## E-WiFi (#9): tried and rejected, 2026-11-27
 - AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
