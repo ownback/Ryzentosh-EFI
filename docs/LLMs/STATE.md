@@ -1,24 +1,38 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #1/#2 (claude-opus-5-5/high), branch `research/1-smbios-t2`.
+Updated: 2026-11-27 by the Project Lead for #4 (claude-opus-5-5 / high).
 
 ## Phase
-Research (ADR-0003). E1 (#4) runs in a separate thread.
+E1 (#4) accepted. PR https://github.com/ownback/Ryzentosh-EFI/pull/7 is ready, and the Orchestrator squash-merges it.
+Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue, branch and PR.
 
-## Done (this branch)
-- RB-0003a findings: `docs/LLMs/re/RB-0003a-board-id-branching.md`. An inventory of 25G241 board-id/model branches (AGDP, AGPM, X86PlatformPlugin, AppleIntelMCEReporter, AppleGVA/HEVC encoder, MediaToolbox FairPlay gate, audio DSP, USB, slot notifications, Sidecar/UC/AirPlay/Displays lists).
-- RB-0003b findings: `docs/LLMs/re/RB-0003b-t2-features.md`. Per-T2-service table in the owner's three classes (real / presence-without-crypto / Apple-provisioned), plus the live kexts (RyzentoshSSE, RestrictEvents, AppleMCEReporterDisabler, VirtualSMC).
+## Done
+- **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
+  - `config.plist` has identity placeholders and no AMD_Vanilla patches; `kernel-patches.json` pins them and
+    `tools/efi-stage` injects them.
+  - The SSDTs (+ `.dsl`) and the UTBMap USB map are in git. The 36 binaries are pinned in `EFI/BINARIES.sha256`, and
+    `docs/LLMs/KEXTS.md` covers every one of them plus the boot-args. All boot-args are kept (`debug=0x100` until #6).
+  - **Accepted without a test boot** (owner rule "Test reboots": reboot only when boot-relevant bytes change). The
+    Orchestrator staged with `--apply` on 2026-11-27 20:17 onto the internal `EFI/OC`.
+    - The staged `config.plist` sha256 equals the previous live one; `Kernel/Patch` is identical to live; 36/36 binaries match.
+    - The only tree difference restored `MtkWirelessBT.kext/Contents/Resources/google-libsbc-LICENSE.txt`, which the live
+      tree had lost to a FAT fsck.
+    - The USB known-good is boot-tested: boot-20261127-201549 is clean.
+- **RB-0003a/b (#1, #2, PR #8):** findings are in `docs/LLMs/re/`.
 
 ## Key findings to act on
 - **The live root node has `board-ix` and no `board-id`.** By OpenCore's source the AGDP patch can't apply (AGDP is in the SystemKC), so what renames the property is open. The existing RELEASE log shows no failure for patch 25, which argues against "no-op". The patch is treated as load-bearing until E-AGDP (one confounded observation). X86PlatformPlugin runs with the `Placeholder` profile. **Restoring `board-id` risks AppleIntelMCEReporter loading on AMD** (by its matching dictionaries, AppleMCEReporterDisabler doesn't block it). E1 is a byte-identical round trip with patch 25 untouched. E-AGDP (step 0 + step 1, RB-0003a §1) runs after E1 is promoted.
 - Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
 ## In flight
-- Draft research PR https://github.com/ownback/Ryzentosh-EFI/pull/8 for #1 + #2. First review (claude-fable-5-2): 3 blocking + 13 should-fix, addressed. Second review of the revised text: approve with nits; its 5 should-fix items and nits are addressed.
-
-## Next step
-- PR #8 is ready. The Orchestrator squash-merges it, then this thread settles.
-- RB-0003c (#3) gets its own thread. PLATFORM gets RB-0003e/f (PLATFORM#4 for SSE, the VirtualSMC key audit). E-AGDP is queued in the control-plane ROADMAP after E1.
+- PR #7 (E1): ready, waiting for the Orchestrator's squash merge.
+- E-WiFi: being prepared.
 
 ## Blockers
 None. (The KDK 25G241 would let RB-0003a's open items trace the kext code paths.)
+
+## Follow-ups (not in this PR)
+- `config.plist` top-level `#comment` with an SPDX line (changes the loaded file, so it needs its own change).
+- CI privacy scan: check `ROM` too, and drop `|| true` on the plist lint (`.github/workflows/ci.yml`).
+- The skill symlinks (`.agents/skills/ryzentosh`, `.claude/skills/ryzentosh`, `.claude/agents`) are relative and break
+  in worktrees outside `~/Projects/Ryzentosh/` (control-plane `link-shared.sh`).

@@ -1,0 +1,16 @@
+{
+  "_comment": "Kernel/Patch entries injected by the control plane's tools/efi-stage, never committed: AMD-OSX/AMD_Vanilla publishes no license. efi-stage reads patches.plist at this commit from the local clone, checks its sha256, applies the edits (core count 12 for the Ryzen 9 7900X3D) and puts the 25 upstream patches before config.plist's own. Manual path: docs/Humans/KERNEL-PATCHES.md.",
+  "source": {
+    "url": "https://github.com/AMD-OSX/AMD_Vanilla",
+    "commit": "eaf52ef292abf4ebec899df6d48626569ba50cc6",
+    "path": "patches.plist",
+    "sha256": "4bc820109b3d020c3c547fa23c49e0098e4f4a2c625ed6184dd54e390e84e1ab"
+  },
+  "local": "repositories/AMD_Vanilla",
+  "edits": [
+    {"index": 0, "key": "Replace", "byte": 1, "value": 12},
+    {"index": 1, "key": "Replace", "byte": 1, "value": 12},
+    {"index": 2, "key": "Replace", "byte": 1, "value": 12},
+    {"index": 3, "key": "Replace", "byte": 1, "value": 12}
+  ]
+}
