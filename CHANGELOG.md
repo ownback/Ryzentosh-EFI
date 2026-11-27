@@ -3,6 +3,7 @@
 Format: [Keep a Changelog](https://keepachangelog.com/). Release stages: research → alpha → beta → stable.
 
 ## [Unreleased]
+- E-WiFi (#9): `AirportMtkWlan` 2.3.3 (AWDL beta, Tahoe build) replaces `MtkWirelessWifi` 1.1.1. Boot-arg `amtk_awdl_offchan=0` removed (only MtkWirelessWifi read it). Bluetooth unchanged.
 - E1 (#4): the live EFI/OC imported as dotfiles (identity placeholders, SSDT sources, USB map, `EFI/BINARIES.sha256`, `docs/LLMs/KEXTS.md`).
 - E1 (#4): the AMD_Vanilla kernel patches (no upstream license) are pinned in `kernel-patches.json` and injected at staging, not committed.
 - E1 (#4): every boot-arg is kept and justified in KEXTS.md. `debug=0x100` stays until panic-log persistence is proven (#6).

@@ -413,13 +413,13 @@
 				<key>Arch</key>
 				<string>x86_64</string>
 				<key>BundlePath</key>
-				<string>MtkWirelessWifi.kext</string>
+				<string>AirportMtkWlan.kext</string>
 				<key>Comment</key>
-				<string>MediaTek MT7922 Wi-Fi (Dino-VN/MtkWireless, Tahoe only)</string>
+				<string>MediaTek MT7922 (RZ616) native AirPort Wi-Fi + AWDL beta (Arxusion/AirportMtkWlan v2.3.3-awdl-beta1, Tahoe build only); needs DisableIoMapper</string>
 				<key>Enabled</key>
 				<true/>
 				<key>ExecutablePath</key>
-				<string>Contents/MacOS/MtkWirelessWifi</string>
+				<string>Contents/MacOS/AirportMtkWlan</string>
 				<key>MaxKernel</key>
 				<string>25.99.99</string>
 				<key>MinKernel</key>
@@ -881,7 +881,7 @@
 				AAAAAAAAAAAAAAAAAAA=
 				</data>
 				<key>boot-args</key>
-				<string>-v keepsyms=1 debug=0x100 pci=0x8000000 amtk_awdl_offchan=0 ipc_control_port_options=0 phxdebug=1</string>
+				<string>-v keepsyms=1 debug=0x100 pci=0x8000000 ipc_control_port_options=0 phxdebug=1</string>
 				<key>csr-active-config</key>
 				<data>
 				AwoAAA==

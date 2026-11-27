@@ -3,8 +3,8 @@
 Updated: 2026-11-27 by the Project Lead for #4 (claude-opus-5-5 / high).
 
 ## Phase
-E1 (#4) accepted. PR https://github.com/ownback/Ryzentosh-EFI/pull/7 is ready, and the Orchestrator squash-merges it.
-Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue, branch and PR.
+E-WiFi (#9): AirportMtkWlan 2.3.3 (AWDL beta) replaces MtkWirelessWifi 1.1.1. Branch `feat/9-airportmtkwlan`; the
+Orchestrator stages it, and the owner tests on the next reboot.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -25,8 +25,13 @@ Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue
 - Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
 ## In flight
-- PR #7 (E1): ready, waiting for the Orchestrator's squash merge.
-- E-WiFi: being prepared.
+- **E-WiFi (#9):** the PR is open, and the candidate is at `temp/ewifi-candidate/EFI/OC` (recipe beside it).
+  - The `efi-stage` dry run on 2026-11-27 20:31 shows `kernel patches: 25 … (4 edits) + 1 own` and `Kernel/Patch`
+    identical to live; ocvalidate reports only E3.
+  - Tree diff: +AirportMtkWlan, −MtkWirelessWifi, `~config.plist`.
+  - Config diff: `Kernel/Add[5]` swapped, `amtk_awdl_offchan=0` dropped (only MtkWirelessWifi read it).
+  - Next: the owner test list and abort criteria in the PR.
+- E1 (#4): merged as 351b169.
 
 ## Blockers
 None. (The KDK 25G241 would let RB-0003a's open items trace the kext code paths.)
