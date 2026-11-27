@@ -34,8 +34,10 @@ Orchestrator stages it, and the owner tests on the next reboot.
     `logs-local/ewifi/`: 94.5/42.5 Mbps, RPM 418, ch 52 80 MHz 802.11ax.
   - Review (claude-fable-5-2): CHANGES-REQUESTED on the test plan only, with no boot blocker. Fixed in the PR: a step-0
     baseline on the old driver before the reboot, "worse than baseline" means abort, any panic while loaded aborts, ping during AWDL, risk high, v2.3.2 fallback.
-  - Next: the owner's step-0 baseline (as a PR comment), then the reboot test, then the soak (≥ 24 h including one overnight sleep,
-    3 cold + 3 warm boots with boot reports) before merge and USB promotion.
+  - The step-0 baseline is posted (PR #10 comment): AirDrop discovery OK, but no transfer; Handoff and Clipboard OK; AirPods OK,
+    the iPhone can't connect over BT. Sleep is off on this system.
+  - Next: the owner's reboot test, then the soak (≥ 24 h of normal use, 3 cold + 3 warm boots with boot reports) before merge and
+    USB promotion. The candidate must keep AirDrop discovery (#24); a failed transfer is not an abort.
 - E1 (#4): merged as 351b169.
 
 ## Blockers
