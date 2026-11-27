@@ -1,6 +1,6 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #4 (claude-opus-5-5 / high).
+Updated: 2026-11-27 by the Project Lead for #4 and #9 (claude-opus-5-5 / high).
 
 ## Phase
 E-WiFi (#9): AirportMtkWlan 2.3.3 (AWDL beta) replaces MtkWirelessWifi 1.1.1. Branch `feat/9-airportmtkwlan`; the
@@ -32,7 +32,10 @@ Orchestrator stages it, and the owner tests on the next reboot.
   - Config diff: `Kernel/Add[5]` swapped, `amtk_awdl_offchan=0` dropped (only MtkWirelessWifi read it).
   - Staged by the Orchestrator 2026-11-27 20:33 from head 3192937. The baseline (MtkWirelessWifi) is in control-plane
     `logs-local/ewifi/`: 94.5/42.5 Mbps, RPM 418, ch 52 80 MHz 802.11ax.
-  - Next: the owner's test on the next reboot. The independent review (claude-fable-5-2) is running.
+  - Review (claude-fable-5-2): CHANGES-REQUESTED on the test plan only, with no boot blocker. Fixed in the PR: a step-0
+    baseline on the old driver before the reboot, "worse than baseline" means abort, any panic while loaded aborts, ping during AWDL, risk high, v2.3.2 fallback.
+  - Next: the owner's step-0 baseline (as a PR comment), then the reboot test, then the soak (≥ 24 h including one overnight sleep,
+    3 cold + 3 warm boots with boot reports) before merge and USB promotion.
 - E1 (#4): merged as 351b169.
 
 ## Blockers
