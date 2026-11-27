@@ -11,12 +11,13 @@ Research (ADR-0003). E1 (#4) runs in a separate thread.
 
 ## Key findings to act on
 - **The live root node has `board-ix` and no `board-id`.** By OpenCore's source the AGDP patch can't apply (AGDP is in the SystemKC), so what renames the property is open. The patch is still load-bearing for the display in practice (prior notes). X86PlatformPlugin runs with the `Placeholder` profile. **Restoring `board-id` risks AppleIntelMCEReporter loading on AMD** (AppleMCEReporterDisabler doesn't block it). There's no E1 recommendation yet: run the two-step one-shot experiment in RB-0003a §1 first (Orchestrator).
-- Nothing publishes a T2 device. RyzentoshSSE is a protocol-level stand-in under Apple's `AppleSSE` class (a workaround, needs a flag and an issue; the emulation verdict is the Orchestrator's). VirtualSMC is an emulated SMC. Both are policy questions.
+- Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
 ## In flight
 - Draft research PR https://github.com/ownback/Ryzentosh-EFI/pull/8 for #1 + #2. The independent review (claude-fable-5-2) found 3 blocking items and 13 should-fix items, all addressed in the docs.
 
 ## Next step
+- Second review of the revised text (claude-fable-5-2), then mark PR #8 ready. The Orchestrator squash-merges it, then this thread settles. RB-0003c (#3) gets its own thread.
 - The Orchestrator writes RB-0003c (model choice) and RB-0003d+ (per-service briefs) from these tables. One-shot test request: AGDP patch disabled.
 
 ## Blockers

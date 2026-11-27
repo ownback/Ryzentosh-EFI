@@ -53,7 +53,7 @@ its `AppleACPICPU` personality (score 1100) only outbids Apple's own ACPI CPU pe
 could load on AMD and panic**. Today it is most likely kept out by the missing `board-id` (inferred). (c) AGDP would get a board-id
 and might attach to `PhxDeviceControl`, which is a behaviour change.
 
-Proposed experiment (Orchestrator, one-shot, after G-EFI). **Step 0:** an OpenCore DEBUG log that reaches the kernel patcher, to
+Experiment, queued in ROADMAP as **E-AGDP** after E1 is promoted (E1 is a byte-identical round trip and leaves patch 25 alone). Each boot needs an owner F8 boot. **Step 0:** an OpenCore DEBUG log that reaches the kernel patcher, to
 see whether patch 25 reports Not Found (expected under B/C) or success (A). **Step 1:** a candidate with only that patch disabled.
 
 | Hypothesis | Expected after step 1 |
@@ -151,7 +151,7 @@ AppleThunderboltEDMSource, ApplePlatformEnabler (DVD/ODS flags for old models) a
 
 ## 4. Open items
 
-- Section 1 experiment (Orchestrator, after G-EFI). Read-only on this branch. Also: does AppleIntelMCEReporter still panic on AMD on 25G241?
+- Section 1 experiment = E-AGDP (Orchestrator, after E1). Read-only on this branch. Also: does AppleIntelMCEReporter still panic on AMD on 25G241?
 - REA trace of where X86PlatformPlugin, AGPM and AppleGVA read `board-id` (`IOService:/` vs `/efi/platform`). The strings here
   don't settle it. The KDK 25G241 would help for the kexts.
 - Identify the libMobileGestalt answer behind the board-id list.
