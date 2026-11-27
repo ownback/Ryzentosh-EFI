@@ -5,7 +5,7 @@ Hand-maintained OpenCore 1.0.8 tree for the reference machine (no build script).
 | Path | What |
 |---|---|
 | `OC/config.plist` | The live config minus the AMD_Vanilla kernel patches, which are injected at staging (see `../kernel-patches.json`). SMBIOS identity is **placeholders** (`PlatformInfo/Generic`: SystemSerialNumber `PLACEHOLDER`, MLB `PLACEHOLDER-MLB`, SystemUUID all zeros, ROM empty) |
-| `OC/ACPI/*.aml` | The two SSDTs as booted. Sources: `../acpi/*.dsl` |
+| `OC/ACPI/*.aml` | The two SSDTs as booted, byte-identical to the [Ryzentosh-ACPI v0.1.0](https://github.com/ownback/Ryzentosh-ACPI/releases/tag/v0.1.0) release assets. Sources: Ryzentosh-ACPI `src/` (a reference copy is in `../acpi/*.dsl`) |
 | `OC/Kexts/UTBMap.kext` | Codeless USB map of the B650E-I |
 | `BINARIES.sha256` | SHA-256 of every binary the tree needs that is not committed (paths relative to the folder that holds `OC/`) |
 | `../kernel-patches.json` | Pin and edits for the AMD_Vanilla kernel patches, which aren't committed (no upstream license); see `docs/Humans/KERNEL-PATCHES.md` |

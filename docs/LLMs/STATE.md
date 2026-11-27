@@ -24,6 +24,19 @@ E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-goo
 - **The live root node has `board-ix` and no `board-id`.** By OpenCore's source the AGDP patch can't apply (AGDP is in the SystemKC), so what renames the property is open. The existing RELEASE log shows no failure for patch 25, which argues against "no-op". The patch is treated as load-bearing until E-AGDP (one confounded observation). X86PlatformPlugin runs with the `Placeholder` profile. **Restoring `board-id` risks AppleIntelMCEReporter loading on AMD** (by its matching dictionaries, AppleMCEReporterDisabler doesn't block it). E1 is a byte-identical round trip with patch 25 untouched. E-AGDP (step 0 + step 1, RB-0003a §1) runs after E1 is promoted.
 - Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
+## End-state layout (owner decision 2026-11-27; docs only, nothing that boots changed)
+- One Ryzentosh repo ships one kext, named after the repo. `Kexts/` ends up as Lilu, VirtualSMC, RyzentoshCPU,
+  RyzentoshPlatform, RyzentoshWireless and RyzentoshGPU. The mapping per file is the KEXTS.md "Replaced by" column.
+  - Ryzentosh-dGPU is renamed Ryzentosh-GPU (RyzentoshGPU.kext: RX 7900 XTX + Raphael iGPU); Ryzentosh-iGPU is archived.
+  - Ryzentosh-AIR is merged into Ryzentosh-WIRELESS and archived (RyzentoshWireless.kext: Wi-Fi, BT, AWDL/Continuity and
+    the bluetoothd patch, the one named essential workaround; GPL-3.0-only).
+  - RyzentoshCPU absorbs AppleMCEReporterDisabler and the Hypervisor backend; RyzentoshPlatform absorbs NVMeFix, the USB
+    map and RestrictEvents' jobs.
+- The SSDTs come from Ryzentosh-ACPI (MIT, one SSDT per purpose). `EFI/OC/ACPI/*.aml` is byte-identical to the v0.1.0
+  release assets (da5bf6ea…, f651e3f7…; the Orchestrator hashed the live ESP too). `acpi/*.dsl` stays as a reference copy.
+- The Root Orchestrator files issues only in ownback/Ryzentosh. Issues, comments and PR notes in this repo are the
+  Lead's job.
+
 ## In flight
 Nothing. The Orchestrator asks for the next Wi-Fi candidate, Dino-VN/MtkWireless v1.1.3 (Wi-Fi + Bluetooth, same author),
 when it wants it.

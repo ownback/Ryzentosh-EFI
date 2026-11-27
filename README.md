@@ -1,6 +1,6 @@
 # Ryzentosh-EFI
 
-Hand-maintained ("dotfiles") OpenCore EFI for this hardware. config.plist with identity placeholders, SSDTs, USB map, tested kexts, SMBIOS rationale (ADR-0003), boot-args policy, reinstall guide. NO build script.
+Hand-maintained ("dotfiles") OpenCore EFI for this hardware. config.plist with identity placeholders, the SSDTs from Ryzentosh-ACPI releases, USB map, the tested kexts (end state: one kext per Ryzentosh repo — RyzentoshCPU, RyzentoshPlatform, RyzentoshWireless, RyzentoshGPU — plus Lilu and VirtualSMC), SMBIOS rationale (ADR-0003), boot-args policy, reinstall guide. NO build script.
 
 Part of [Ryzentosh](https://github.com/ownback/Ryzentosh): macOS Tahoe on an AMD PC, built to behave like a Mac Apple designed and
 supports. Written by AI agents. Apple is not involved in this project.
