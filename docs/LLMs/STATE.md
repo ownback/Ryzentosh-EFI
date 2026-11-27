@@ -30,13 +30,16 @@ Orchestrator stages it, and the owner tests on the next reboot.
     identical to live; ocvalidate reports only E3.
   - Tree diff: +AirportMtkWlan, −MtkWirelessWifi, `~config.plist`.
   - Config diff: `Kernel/Add[5]` swapped, `amtk_awdl_offchan=0` dropped (only MtkWirelessWifi read it).
-  - Next: the owner test list and abort criteria in the PR.
+  - Staged by the Orchestrator 2026-11-27 20:33 from head 3192937. The baseline (MtkWirelessWifi) is in control-plane
+    `logs-local/ewifi/`: 94.5/42.5 Mbps, RPM 418, ch 52 80 MHz 802.11ax.
+  - Next: the owner's test on the next reboot. The independent review (claude-fable-5-2) is running.
 - E1 (#4): merged as 351b169.
 
 ## Blockers
 None. (The KDK 25G241 would let RB-0003a's open items trace the kext code paths.)
 
 ## Follow-ups (not in this PR)
+- After E-WiFi: evaluate bumping MtkWirelessBT 1.1.1 → Dino-VN/MtkWireless v1.1.3 (2026-11-25), as its own EFI change (Orchestrator).
 - `config.plist` top-level `#comment` with an SPDX line (changes the loaded file, so it needs its own change).
 - CI privacy scan: check `ROM` too, and drop `|| true` on the plist lint (`.github/workflows/ci.yml`).
 - The skill symlinks (`.agents/skills/ryzentosh`, `.claude/skills/ryzentosh`, `.claude/agents`) are relative and break
