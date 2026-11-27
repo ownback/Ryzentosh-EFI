@@ -32,7 +32,7 @@ A Ryzentosh component replaces a legacy binary only through its own tested relea
 | 2 | NVMeFix | 1.1.3 | [acidanthera/NVMeFix 1.1.3](https://github.com/acidanthera/NVMeFix/releases/tag/1.1.3) (`e1d5657ab7ac31f69771708f7b80bf218ab9aa0b8e4c4fe6ff943983037e3dfb`) | BSD-3-Clause (LICENSE.txt) | no | APST/power management for the non-Apple NVMe (Phison E26, `1987:5026`) | Ryzentosh-PLATFORM (NVMe power) |
 | 3 | RestrictEvents | 1.1.6 | [acidanthera/RestrictEvents 1.1.6](https://github.com/acidanthera/RestrictEvents/releases/tag/1.1.6) (`98170dfae195ddd28b5d95e3f040125a13ca783bcb9bd1e5b8c588e217b14ee6`) | BSD-3-Clause | no | MacPro7,1 memory and PCI slot warnings off (the board has no Mac Pro memory/PCI topology) | Decided with the SMBIOS model (ADR-0003). Ryzentosh-PLATFORM |
 | 4 | AppleMCEReporterDisabler | 1.2 (codeless) | acidanthera, [bugtracker#424](https://github.com/acidanthera/bugtracker/issues/424#issuecomment-535624313) (listed in OpenCorePkg `Docs/Kexts.md`) | none stated | no | AppleMCEReporter panics on AMD CPUs with MacPro7,1 | Decided with ADR-0003 (SMBIOS). Ryzentosh-CPU |
-| 5 | MtkWirelessWifi | 1.1.1 | [Dino-VN/MtkWireless v1.1.1](https://github.com/Dino-VN/MtkWireless/releases/tag/v1.1.1) (`c9bbc2ed3ad4ab55fa785e620e4b61e1ef767486e067cb5914644b94683cb2fd`) | GPL-2.0 (bundle copyright) | no (GPL, kept out of this BSD repo) | Wi-Fi of the RZ616 / MT7922 (`14c3:0616`, subsys `105b:e0cd`); Tahoe-only (`MinKernel 25.0.0`) | Ryzentosh-WIRELESS |
+| 5 | MtkWirelessWifi | 1.1.1 | [Dino-VN/MtkWireless v1.1.1](https://github.com/Dino-VN/MtkWireless/releases/tag/v1.1.1) (`c9bbc2ed3ad4ab55fa785e620e4b61e1ef767486e067cb5914644b94683cb2fd`) | GPL-2.0 (bundle copyright) | no (GPL, kept out of this BSD repo) | Wi-Fi of the RZ616 / MT7922 (`14c3:0616`, subsys `105b:e0cd`); Tahoe-only (`MinKernel 25.0.0`). AirportMtkWlan 2.3.3 was tried as a replacement and rejected (E-WiFi #9, see below) | Ryzentosh-WIRELESS |
 | 6 | USBToolBox | 1.2.0 | [USBToolBox/kext 1.2.0](https://github.com/USBToolBox/kext/releases/tag/1.2.0) (`c315a3a5acfd496dd97d0d19b4fbd1d487103d2fd541c5651583d4c9cebcfe07`) | **no license** in the repo | no | USB map engine; applies UTBMap's ports (macOS limits each controller to 15 ports) | Ryzentosh-PLATFORM (USB). Until then the map stays as data |
 | 7 | UTBMap | 1.0 (codeless) | Vermilion `efi/` (study clone `ownback/vermilion-xtx`), generated 2026-11-22 for this board | MIT (SPDX in its `#comment`) | **yes** | The B650E-I USB map: chipset XH00 (8 of its 17 ports kept), CPU XHC0/XHC1 (4 each), XHC2 (1). Front-panel headers and the AURA LED port are left out | Ryzentosh-PLATFORM (USB) |
 | 8 | SMCProcessorAMD | 1.0.1 | [macos86/SMCProcessorAMD 1.0.1](https://github.com/macos86/SMCProcessorAMD/releases/tag/1.0.1) (`2622e54c69b38a5e491edd2c9532d98a01a3d3ba23316adaed28af8f4efa8638`) | BSD-3-Clause | no | CPU temperature, package power and clocks as VirtualSMC keys (read-only) | Ryzentosh-CPU (SMC CPU sensors) |
@@ -72,6 +72,14 @@ the checksum and the compiler-revision header bytes (offsets 9 and 32–35).
 
 xnu and IOPCIFamily line numbers refer to the tags xnu-12377.121.6 and IOPCIFamily-726.100.6 of Apple's open source, which may
 differ slightly from the 25G241 binaries. ADR numbers refer to the control plane's `.agents/decisions/`.
+
+## Tried and rejected
+
+| Date | Change | Result | Why rejected | Reference |
+|---|---|---|---|---|
+| 2026-11-27 | E-WiFi (#9): `AirportMtkWlan` 2.3.3, Arxusion/AirportMtkWlan v2.3.3-awdl-beta1 Tahoe AWDL beta (asset sha256 `2b744247fb69b2253823eafb14c3a4cb1ccd68b353ed95a6d9d2493dd151aa4d`), in place of MtkWirelessWifi 1.1.1, with `amtk_awdl_offchan=0` dropped | Boot `boot-20261127-210900` (F8 → internal) was clean: no panic or crash, no OCAK link error, `com.flxxxxddd.AirportMtkWlan` loaded, `awdl0` up. Same as baseline: AirDrop (discovery both ways, no transfer; upstream #24's discovery loss didn't reproduce), Handoff, Bluetooth, AirPlay receive, downlink (95.7 vs 94.5 Mbps) | **Worse than the step-0 baseline:** Universal Clipboard Mac → iPhone lost (iPhone → Mac still works); uplink 42.5 → 36.3 Mbps (−15 %); responsiveness 418 → 245 RPM (−41 %); Tx rate 867 → 432 Mbps on the same ch 52 80 MHz 802.11ax link. Rolled back the same day (internal `EFI/OC` back to E1; the failed tree is kept as `EFI/OC.bad`) | Draft PR #10 (results: issuecomment-7227370725, baseline: issuecomment-7227118231) |
+
+Next Wi-Fi candidate, when the Orchestrator asks: Dino-VN/MtkWireless v1.1.3 (Wi-Fi + Bluetooth, the same author as today's kexts).
 
 ## Other notable config entries (unchanged by the import)
 

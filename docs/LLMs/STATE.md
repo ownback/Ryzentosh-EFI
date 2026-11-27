@@ -1,10 +1,10 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #4 (claude-opus-5-5 / high).
+Updated: 2026-11-27 by the Project Lead for #4 and #9 (claude-opus-5-5 / high).
 
 ## Phase
-E1 (#4) accepted. PR https://github.com/ownback/Ryzentosh-EFI/pull/7 is ready, and the Orchestrator squash-merges it.
-Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue, branch and PR.
+E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-good config. E-WiFi (#9) was tried and
+**rejected** (see below). No EFI change is in flight, and the EFI lock is free.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -25,8 +25,18 @@ Next EFI change: E-WiFi (AirportMtkWlan replaces MtkWirelessWifi), its own issue
 - Nothing publishes a T2 device. Orchestrator decisions (2026-11-27): RyzentoshSSE is a workaround (a stand-in under Apple's class name), to be replaced under ownback/Ryzentosh-PLATFORM#4 and then removed in its own EFI PR. VirtualSMC is allowed if every key is backed by real hardware state or absent. E1 leaves the AGDP patch untouched; the test boots are queued as E-AGDP after E1.
 
 ## In flight
-- PR #7 (E1): ready, waiting for the Orchestrator's squash merge.
-- E-WiFi: being prepared.
+Nothing. The Orchestrator asks for the next Wi-Fi candidate, Dino-VN/MtkWireless v1.1.3 (Wi-Fi + Bluetooth, same author),
+when it wants it.
+
+## E-WiFi (#9): tried and rejected, 2026-11-27
+- AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
+  kept for reference.
+- Boot `boot-20261127-210900` (internal) was clean. Compared with the step-0 baseline on the old driver:
+  - Universal Clipboard Mac → iPhone was lost.
+  - Uplink 42.5 → 36.3 Mbps, responsiveness 418 → 245 RPM, Tx rate 867 → 432 Mbps.
+  - Everything else was the same.
+- By the PR's rule (worse than baseline → no merge), the Orchestrator rolled back to E1 at once. `EFI/OC.bad` holds the
+  failed tree. Details: KEXTS.md "Tried and rejected".
 
 ## Blockers
 None. (The KDK 25G241 would let RB-0003a's open items trace the kext code paths.)
