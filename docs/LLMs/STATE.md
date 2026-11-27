@@ -1,10 +1,10 @@
 # STATE: Ryzentosh-EFI
 
-Updated: 2026-11-27 by the Project Lead for #4 and #9 (claude-opus-5-5 / high).
+Updated: 2026-11-27 by the Project Lead for #4, #9 and #12 (claude-opus-5-5 / high).
 
 ## Phase
-E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-good config. E-WiFi (#9) was tried and
-**rejected** (see below). No EFI change is in flight, and the EFI lock is free.
+E-WiFi2 (#12): MtkWireless 1.1.1 → 1.1.3 (Wi-Fi + BT). Branch `feat/12-mtkwireless-1.1.3`. Binaries only; `config.plist`
+is unchanged. The owner reboots to test when they choose.
 
 ## Done
 - **E1 (#4):** the live `EFI/OC` is imported as dotfiles.
@@ -38,8 +38,12 @@ E1 (#4) merged (351b169); it is the live internal `EFI/OC` and the USB known-goo
   Lead's job.
 
 ## In flight
-Nothing. The Orchestrator asks for the next Wi-Fi candidate, Dino-VN/MtkWireless v1.1.3 (Wi-Fi + Bluetooth, same author),
-when it wants it.
+- **E-WiFi2 (#12):** the candidate is at `temp/ewifi2-candidate/EFI/OC` (recipe beside it). Four files change, the
+  MtkWirelessWifi/MtkWirelessBT executables and Info.plists; the libsbc license texts are unchanged.
+  - The Info.plists are unchanged apart from the version, so the `Kernel/Add` entries stay. `amtk_awdl_offchan=0` stays:
+    1.1.3 still reads it, and `idle_gap` is moot with it.
+  - Test: the PR #10 structure with the step-0 baseline from #10, plus Bluetooth and a 30-min ping hold. Anything worse
+    than the baseline means roll back.
 
 ## E-WiFi (#9): tried and rejected, 2026-11-27
 - AirportMtkWlan 2.3.3 (Arxusion v2.3.3-awdl-beta1, Tahoe AWDL beta) in place of MtkWirelessWifi 1.1.1; draft PR #10 is
